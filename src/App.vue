@@ -1,28 +1,17 @@
-<template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<template lang="pug">
+  #app
+    .bg-blue-800.py-5.text-center(class="md:py-10")
+      img.w-32.block.m-auto(src="./assets/images/digimon.svg" class="md:w-64")
+    battler
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import battler from './components/battler.vue'
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    battler
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
