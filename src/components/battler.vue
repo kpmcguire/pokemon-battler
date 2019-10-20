@@ -12,7 +12,7 @@
         span.placeholder(class="w-12") &nbsp;
 
     .flex.items-center.battleground(v-bind:class="{active: isActive}" v-if="loaded")
-      div(v-for="(p, index) in pokemon" :key="p.id" class="pokewrap w-2/5 p-5") 
+      div(v-for="(p, index) in pokemon" :key="p.id" class="pokewrap w-2/5 p-2 md:p-5") 
         div.text-center
           //- ul.list-none(v-if="p.abilities")
           //-   li(v-for="(x) in p.abilities") {{x.ability.name}} 
@@ -34,27 +34,27 @@
         span.bg-red-600.text-white.rounded-full.font-bold.border-4.border-white(class="sm:text-2xl md:3xl md:px-4 md:py-5 px-2 py-3") Vs.   
     .flex.flex-col.bg-blue-800(class="md:flex-row")
         div(class="w-full md:w-1/3 ")
-          .text-white(class="text-3xl md:text-5xl p-4 py-0 md:px-8 md:pt-4 md:pb-0") {{cash | toCurrency}}      
+          .text-white(class="text-2xl md:text-5xl p-4 py-0 md:px-8 md:pt-4 md:pb-0") {{cash | toCurrency}}      
           div(class="p-4 py-2 md:p-8 md:py-2")
             .flex.flex-wrap.w-full
-              label.w-full(for='wager')
+              label.w-full(for='wager' class="text-xs md:text-base")
                 .block.mb-2.text-white Wager
             .flex.items-start
-              input#wager(type="number" v-model="wager" ref="wagerInput" v-on:keydown="checkWager" class="flex-auto w-12shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") 
+              input#wager(type="number" v-model="wager" ref="wagerInput" pattern="[0-9]*" v-on:keydown="checkWager" class="flex-auto w-12shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") 
               button(class="flex-none bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ml-4 rounded" v-on:click="betMax") 
                   span(class="hidden md:inline") Bet 
                   span Max     
-          div(class="p-4 md:px-8 md:py-4")
+          div(class="p-2 px-4 md:px-8 md:py-4 text-xs md:text-base")
             ul.text-yellow-400(v-if="errors.length") 
               li(v-for="error in errors") {{error}}
             ul.text-yellow-400(v-else-if="!selectedBattler") 
               li Pick a 'mon
             ul.text-green-300(v-else) 
               li Let's go!
-            button.w-full(value="fight" :disabled="!isValid" v-bind:class="{disabled: !isValid}" v-on:click="announceWinner" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-6 my-4 text-5xl rounded") Fight!   
+            button.w-full(value="fight" :disabled="!isValid" v-bind:class="{disabled: !isValid}" v-on:click="announceWinner" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-6 my-4 text-3xl md:text-5xl rounded") Fight!   
         .p-4(class="w-full md:w-2/3  md:p-10 order-first md:order-last")              
           .battle-output-wrapper
-            #battle-output.output.text-left(v-html="output" ref="output" class="h-24 md:h-64")
+            #battle-output.output.text-left(v-html="output" ref="output" class="h-16 md:h-64 text-xs md:text-lg")
 
 </template>
 
