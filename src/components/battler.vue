@@ -1,5 +1,18 @@
 <template lang="pug">
   form(v-on:submit.prevent)
+    .flex.items-center.justify-center.h64(v-if="matchOver")
+      .modal.absolute.w-full.h-full.top-0.left-0.flex.items-center.justify-center
+        .modal-overlay.absolute.w-full.h-full.bg-black.opacity-25.top-0.left-0.cursor-pointer
+        .absolute(class="w-1/2  bg-white rounded shadow-lg items-center justify-center text-center z-10 p-5")  
+          p.text-2xl(class="md:text-4xl")
+            span.text-orange-400.font-bold(v-if="this.sorted[0].name === this.selectedBattler") You win!
+            span.text-blue-400.font-bold(v-else) You Lose
+
+          button(v-if="cash > 0" v-on:click="loadPokemons" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-6 my-4 text-2xl rounded") Next 
+          div(v-else) 
+            p.text-5xl.text-green-400 Game Over
+            button(onclick="window.location.reload(false)" class="bg-green-600 hover:bg-green-800 text-white font-bold py-2 px-6 my-4 text-2xl rounded") Go Again?
+
     .flex.items-center.tombstone.battleground(v-if="!loaded") 
       each r in [...Array(2).keys()]
         div(class="pokewrap w-2/5 p-5") 
@@ -31,7 +44,7 @@
               span.capitalize {{p.name}} 
               span(class="hidden md:inline") will win
       div.vs.text-center(class="w-1/5") 
-        span.bg-red-600.text-white.rounded-full.font-bold.border-4.border-white(class="sm:text-2xl md:3xl md:px-4 md:py-5 px-2 py-3") Vs.   
+        span.bg-red-600.text-white.rounded-full.font-bold.border-4.border-white(class="text-base md:text-3xl md:px-4 md:py-5 px-1 py-2") Vs.   
     .flex.flex-col.bg-blue-800(class="md:flex-row")
         div(class="w-full md:w-1/3 ")
           .text-white(class="text-2xl md:text-5xl p-4 py-0 md:px-8 md:pt-4 md:pb-0") {{cash | toCurrency}}      
@@ -52,7 +65,7 @@
             ul.text-green-300(v-else) 
               li Let's go!
             button.w-full(value="fight" :disabled="!isValid" v-bind:class="{disabled: !isValid}" v-on:click="announceWinner" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-6 my-4 text-3xl md:text-5xl rounded") Fight!   
-        .p-4(class="w-full md:w-2/3  md:p-10 order-first md:order-last")              
+        .p-4(class="w-full md:w-2/3 sm:p-10 order-first md:order-last")
           .battle-output-wrapper
             #battle-output.output.text-left(v-html="output" ref="output" class="h-16 md:h-64 text-xs md:text-lg")
 
@@ -62,7 +75,6 @@
 import _ from 'lodash'
 import axios from 'axios'
 const pokeapi_url = 'https://pokeapi.co/api/v2/pokemon'
-// const pokeapi_url = ''
 
 let rand1 = 0
 let rand2 = 0
@@ -87,7 +99,7 @@ export default {
       validWager: false,
       loaded: false,
       allowFight: false, 
-      matchOver: true,
+      matchOver: false,
       output: ''
     }
   },
@@ -164,7 +176,6 @@ export default {
 
       setTimeout(()=>{
 
-
         this.output += `${statement3}<br/>`
         var container = this.$refs.output;
         container.scrollTop = container.clientHeight;
@@ -181,8 +192,6 @@ export default {
 
    
       setTimeout(()=>{   
-        this.matchOver = false
-
         this.output += `${winStatement}<br/>`
 
         if (this.sorted[0].name === this.selectedBattler) {
@@ -201,19 +210,23 @@ export default {
           this.cash -= this.wager
           localStorage.setItem('cash', this.cash)
         }        
+        this.matchOver = true
       }, 3000)
 
-      setTimeout(()=>{   
-        this.pokemon = []
-        this.loadPokemons()
-        this.isActive = false
-        this.matchOver = true
-      }, 5000)
+      // setTimeout(()=>{   
+      //   this.pokemon = []
+      //   this.loadPokemons()
+      //   this.isActive = false
+      //   this.matchOver = true
+      // }, 5000)
     },
     loadPokemons() {
+      this.pokemon = []
+      this.isActive = false
       this.loaded = false
       this.selectedBattler = ''
       this.validWager = false
+
       this.checkWager()
       const count = 807
 
@@ -236,9 +249,11 @@ export default {
             this.loaded = true
           })     
         }))         
+      this.matchOver = false
+
     }, 
     checkWager: _.debounce(function() {
-      this.matchOver = true
+      // this.matchOver = true
       if (this.wager < this.cash && !isNaN(parseFloat(this.wager)) && isFinite(this.wager)) {
         this.validWager = true
         this.errors = []
