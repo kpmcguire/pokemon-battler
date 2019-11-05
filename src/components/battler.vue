@@ -3,14 +3,14 @@
     .flex.items-center.justify-center.h64(v-if="matchOver")
       .modal.absolute.w-full.h-full.top-0.left-0.flex.items-center.justify-center
         .modal-overlay.absolute.w-full.h-full.bg-black.opacity-25.top-0.left-0.cursor-pointer
-        .absolute(class="w-1/2  bg-white rounded shadow-lg items-center justify-center text-center z-10 p-5")  
+        .absolute(class="md:w-1/2  bg-white rounded shadow-lg items-center justify-center text-center z-10 p-5")  
           p.text-2xl(class="md:text-4xl")
             span.text-orange-400.font-bold(v-if="this.sorted[0].name === this.selectedBattler") You win!
             span.text-blue-400.font-bold(v-else) You Lose
 
           button(v-if="cash > 0" v-on:click="loadPokemons" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-6 my-4 text-2xl rounded") Next 
           div(v-else) 
-            p.text-5xl.text-green-400 Game Over
+            p.text-4xl.text-green-400 Game Over
             button(onclick="window.location.reload(false)" class="bg-green-600 hover:bg-green-800 text-white font-bold py-2 px-6 my-4 text-2xl rounded") Go Again?
 
     .flex.items-center.tombstone.battleground(v-if="!loaded") 
